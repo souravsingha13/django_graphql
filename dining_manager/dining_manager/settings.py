@@ -86,7 +86,7 @@ DATABASES = {
 
 # Where my GraphQL schema lives
 GRAPHENE = {
-    'SCHEMA': 'dining_manager.schema.schema',
+    'SCHEMA': 'dining.schema.schema',
 }
 
 # Password validation
