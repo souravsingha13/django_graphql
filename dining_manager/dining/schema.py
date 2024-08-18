@@ -43,7 +43,7 @@ class CreateConsumer(graphene.Mutation):
     def mutate(self, info, name, email):
         consumer = Consumer(name=name, email=email)
         consumer.save()
-        return CreateConsumer(consumer = consumer)
+        return consumer
     
 
 class UpdateConsumer(graphene.Mutation):
@@ -75,9 +75,23 @@ class DeleteConsumer(graphene.Mutation):
         consumer.delete()
         return DeleteConsumer(consumer=None)
     
+class CreateProductCatagory(graphene.Mutation):
+    class Arguments:
+        name = graphene.String(required = True)
+
+    product_category = graphene.Field(ProductCategoryType)
+
+    def mutate(self, info, name):
+        product_category = ProductCatagory(name = name)
+        product_category.save()
+
+        return CreateProductCatagory(product_category = product_category)
+    
 class Mutation(graphene.ObjectType):
     create_consumer = CreateConsumer.Field()
     update_consumer = UpdateConsumer.Field()
     delete_consumer = DeleteConsumer.Field()
+    create_product_category = CreateProductCatagory.Field()
+
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
