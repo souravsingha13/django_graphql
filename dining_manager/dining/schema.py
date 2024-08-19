@@ -54,7 +54,7 @@ class UpdateConsumer(graphene.Mutation):
 
     consumer = graphene.Field(ConsumerType)
 
-    def mutate(self, info, name, email):
+    def mutate(self, info, name, email, id):
         consumer = Consumer.objects.get(pk = id )
         if name :
             consumer.name = name
@@ -87,11 +87,46 @@ class CreateProductCatagory(graphene.Mutation):
 
         return CreateProductCatagory(product_category = product_category)
     
+class UpdateProductCatagory(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required = True)
+        name = graphene.String(required = True)
+
+    product_category = graphene.Field(ProductCategoryType)
+
+    def mutate(self, info, id, name):
+        product_category = ProductCatagory.objects.get(pk = id)
+        if name:
+            product_category.name = name
+        product_category.save()
+
+        return CreateProductCatagory(product_category = product_category)
+    
+    
+class DeleteProductCatagory(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required = True)
+
+    success = graphene.Boolean()
+
+    def mutate(self, info,id):
+        try:
+            product_category = ProductCatagory.objects.get(pk=id)
+            product_category.delete()
+
+            return DeleteProductCatagory(success=True)
+        
+        except ProductCatagory.DoesNotExist:
+
+            return DeleteProductCatagory(success=False)
+    
 class Mutation(graphene.ObjectType):
     create_consumer = CreateConsumer.Field()
     update_consumer = UpdateConsumer.Field()
     delete_consumer = DeleteConsumer.Field()
     create_product_category = CreateProductCatagory.Field()
+    update_product_category = UpdateProductCatagory.Field()
+    delete_product_category = DeleteProductCatagory.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
