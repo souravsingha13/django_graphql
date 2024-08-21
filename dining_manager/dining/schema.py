@@ -37,11 +37,12 @@ class CreateConsumer(graphene.Mutation):
     class Arguments:
         name = graphene.String(required=True)
         email = graphene.String(required=True)
+        image = graphene.String(required = True)
     
     consumer = graphene.Field(ConsumerType)
 
-    def mutate(self, info, name, email):
-        consumer = Consumer(name=name, email=email)
+    def mutate(self, info, name, email, image ):
+        consumer = Consumer(name=name, email=email, image = image)
         consumer.save()
         return consumer
     
@@ -51,15 +52,18 @@ class UpdateConsumer(graphene.Mutation):
         id = graphene.ID(required = True)
         name = graphene.String(required=True)
         email = graphene.String(required=True)
+        image = graphene.String(required = True)
 
     consumer = graphene.Field(ConsumerType)
 
-    def mutate(self, info, name, email, id):
+    def mutate(self, info, name, email, id, image):
         consumer = Consumer.objects.get(pk = id )
         if name :
             consumer.name = name
         if email :
             consumer.email = email
+        if image :
+            consumer.image = image
         consumer.save()
 
         return UpdateConsumer(consumer = consumer)

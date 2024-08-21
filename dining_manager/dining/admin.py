@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Consumer, ProductCatagory, Products
+from .models import Consumer, ProductCatagory, Products,Expenses
 
 class ConsumerAdmin(admin.ModelAdmin):
     list_display = ('name', 'email')  
@@ -14,7 +14,15 @@ class ProductsAdmin(admin.ModelAdmin):
     search_fields = ('name', 'catagory__name')  
     list_filter = ('catagory',)  
 
+class ExpensesAdmin(admin.ModelAdmin):
+    list_display = ('product', 'quantity', 'price', 'buyer')
+    search_fields = ('product__product_name', 'buyer__name')
+    list_filter = ('product', 'buyer')
+
+
+
 # Register the models with the custom admin classes
 admin.site.register(Consumer, ConsumerAdmin)
 admin.site.register(ProductCatagory, ProductCatagoryAdmin)
 admin.site.register(Products, ProductsAdmin)
+admin.site.register(Expenses, ExpensesAdmin)
