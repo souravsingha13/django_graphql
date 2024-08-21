@@ -29,3 +29,14 @@ class Expenses(models.Model):
     price = models.CharField(max_length=255)
     buyer = models.ForeignKey(Consumer, on_delete= models.CASCADE, related_name='purchases')
 
+    def __str__(self) -> str:
+        return {self.buyer,self.price}
+    
+class Meal(models.Model):
+    consumer = models.ForeignKey(Consumer, on_delete=models.CASCADE, related_name="meal")
+    meal_date = models.DateField()
+    meal_count = models.IntegerField()
+
+    def __str__(self) -> str:
+        return {self.consumer, self.meal_count}
+

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Consumer, ProductCatagory, Products,Expenses
+from .models import Consumer, ProductCatagory, Products,Expenses,Meal
 
 class ConsumerAdmin(admin.ModelAdmin):
     list_display = ('name', 'email')  
@@ -20,8 +20,16 @@ class ExpensesAdmin(admin.ModelAdmin):
     list_filter = ('product', 'buyer')
 
 
+class MealAdmin(admin.ModelAdmin):
+    list_display = ('consumer', 'meal_date', 'meal_count')
+    search_fields = ('consumer__name', 'meal_date')
+    list_filter = ('meal_date',)
+
+
+
 
 # Register the models with the custom admin classes
+admin.site.register(Meal, MealAdmin)
 admin.site.register(Consumer, ConsumerAdmin)
 admin.site.register(ProductCatagory, ProductCatagoryAdmin)
 admin.site.register(Products, ProductsAdmin)
