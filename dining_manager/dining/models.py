@@ -49,4 +49,4 @@ class Meal(models.Model):
     meal_count = models.IntegerField()
 
     def __str__(self) -> str:
-        return {self.consumer, self.meal_count}
+        return f"{self.consumer} {self.meal_count}"

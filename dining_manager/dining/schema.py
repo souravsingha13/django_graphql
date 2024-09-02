@@ -18,11 +18,17 @@ class ProductType(DjangoObjectType):
         model = Products
 
 
+class MealType(DjangoObjectType):
+    class Meta:
+        model = Meal
+
+
 # Query to get the data
 class Query(graphene.ObjectType):
     consumers = graphene.List(ConsumerType)
     product_categories = graphene.List(ProductCategoryType)
     products = graphene.List(ProductType)
+    meals = graphene.List(MealType)
 
     def resolve_consumers(self, info, **kwargs):
         return Consumer.objects.all()
@@ -32,6 +38,9 @@ class Query(graphene.ObjectType):
 
     def resolve_products(self, info, **kwargs):
         return Products.objects.all()
+
+    def resolve_meals(self, info, **kwargs):
+        return Meal.objects.all()
 
 
 # Mutations for CRUD operatons
@@ -131,6 +140,22 @@ class DeleteProductCatagory(graphene.Mutation):
             return DeleteProductCatagory(success=False)
 
 
+class CreateMeal(graphene.Mutation):
+    class Arguments:
+        consumer = graphene.ID(required=True)
+        meal_date = graphene.Date(required=True)
+        meal_count = graphene.Int(required=True)
+
+    meal = graphene.Field(MealType)
+
+    def mutate(self, info, consumer, meal_date, meal_count):
+        consumer = Consumer.objects.get(pk=consumer)
+        meal = Meal(consumer=consumer, meal_date=meal_date, meal_count=meal_count)
+        meal.save()
+
+        return CreateMeal(meal=meal)
+
+
 class Mutation(graphene.ObjectType):
     create_consumer = CreateConsumer.Field()
     update_consumer = UpdateConsumer.Field()
@@ -138,6 +163,7 @@ class Mutation(graphene.ObjectType):
     create_product_category = CreateProductCatagory.Field()
     update_product_category = UpdateProductCatagory.Field()
     delete_product_category = DeleteProductCatagory.Field()
+    create_meal = CreateMeal().Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
