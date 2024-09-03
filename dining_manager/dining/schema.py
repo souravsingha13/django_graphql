@@ -156,6 +156,40 @@ class CreateMeal(graphene.Mutation):
         return CreateMeal(meal=meal)
 
 
+class UpdateMeal(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+        consumer = graphene.ID(required=True)
+        meal_date = graphene.Date(required=True)
+        meal_count = graphene.Int(required=True)
+
+    meal = graphene.Field(MealType)
+
+    def mutate(self, info, consumer, meal_date, meal_count, id):
+        meal = Meal.objects.get(id=id)
+        consumer = Consumer.objects.get(pk=consumer)
+        if consumer:
+            meal.consumer = consumer
+        if meal_date:
+            meal.meal_date = meal_date
+        if meal_count:
+            meal.meal_count = meal_count
+        meal.save()
+        return UpdateMeal(meal=meal)
+
+
+class DeleteMeal(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+
+    meal = graphene.Field(MealType)
+
+    def mutate(self, info, id):
+        meal = Meal.objects.get(pk=id)
+        if meal:
+            meal.delete()
+
+
 class Mutation(graphene.ObjectType):
     create_consumer = CreateConsumer.Field()
     update_consumer = UpdateConsumer.Field()
@@ -163,7 +197,9 @@ class Mutation(graphene.ObjectType):
     create_product_category = CreateProductCatagory.Field()
     update_product_category = UpdateProductCatagory.Field()
     delete_product_category = DeleteProductCatagory.Field()
-    create_meal = CreateMeal().Field()
+    create_meal = CreateMeal.Field()
+    update_meal = UpdateMeal.Field()
+    delete_meal = DeleteMeal.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
