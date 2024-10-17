@@ -52,7 +52,7 @@ jobs:
           target: /var/www/dajngo_graphql
           source: ./ 
           port: 22                
-          timeout: 30                            
+          timeout: "30s"                           
           debug: true
 
       - name: Execute deploy commands over SSH
