@@ -32,4 +32,4 @@ jobs:
       
       - name : Run Django test
         run : python manage.py test
-        working-directory : ./dinging_manager
+        working-directory : ./dining_manager
