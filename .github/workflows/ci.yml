@@ -46,8 +46,8 @@ jobs:
       - name: Copy files to the server
         uses: appleboy/scp-action@v0.1.1
         with:
-          host: 192.168.31.234
-          username: sourov
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           target: /var/www/dajngo_graphql
           source: ./ 
@@ -55,8 +55,8 @@ jobs:
       - name: Execute deploy commands over SSH
         uses: appleboy/ssh-action@master
         with:
-          host: 192.168.31.234
-          username: sourov
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /var/www/dajngo_graphql
