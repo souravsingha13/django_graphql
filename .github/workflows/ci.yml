@@ -33,3 +33,36 @@ jobs:
       - name : Run Django test
         run : python manage.py test
         working-directory : ./dining_manager
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/master'
+    
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+      
+      - name: Copy files to the server
+        uses: appleboy/scp-action@v0.1.1
+        with:
+          host: 192.168.31.234
+          username: sourov
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          target: /var/www/dajngo_graphql
+          source: ./ 
+
+      - name: Execute deploy commands over SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: 192.168.31.234
+          username: sourov
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/dajngo_graphql
+            source myenvenv/bin/activate
+            cd /var/www/django_graphql/dining_manager
+            python manage.py migrate
+            python manage.py collectstatic --noinput
+            sudo systemctl restart your-gunicorn-service
+        
