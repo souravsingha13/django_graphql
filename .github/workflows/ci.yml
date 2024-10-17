@@ -26,7 +26,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
-      - name: Run Django tests
-        run: |
-          python manage.py migrate
-          python manage.py test
+      - name: Run Django migrations
+        run: python manage.py migrate
+        working-directory : ./dining_manager
+      
+      - name : Run Django test
+        run : python manage.py test
+        working-directory : ./dinging_manager
