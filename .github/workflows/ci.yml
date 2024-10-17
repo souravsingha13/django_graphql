@@ -42,6 +42,11 @@ jobs:
     steps:
       - name: Check out the code
         uses: actions/checkout@v3
+
+      - name: Test SSH Connectivity
+        run: |
+          ssh -o StrictHostKeyChecking=no sourov@192.168.31.234 "echo 'SSH connection successful'"
+
       
       - name: Copy files to the server
         uses: appleboy/scp-action@v0.1.1
