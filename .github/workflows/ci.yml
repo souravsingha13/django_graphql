@@ -45,7 +45,7 @@ jobs:
 
       - name: Test SSH Connectivity
         run: |
-          ssh -o StrictHostKeyChecking=no sourov@192.168.31.234 "echo 'SSH connection successful'"
+          ssh -o StrictHostKeyChecking=no sourov@45.120.115.234 "echo 'SSH connection successful'"
 
       
       - name: Copy files to the server
