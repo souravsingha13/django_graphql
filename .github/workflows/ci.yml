@@ -43,9 +43,9 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v3
 
-      - name: Test SSH Connectivity
-        run: |
-          ssh -o StrictHostKeyChecking=no sourov@localhost "echo 'SSH connection successful'"
+      # - name: Test SSH Connectivity
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no sourov@localhost "echo 'SSH connection successful'"
 
       
       - name: Copy files to the server
