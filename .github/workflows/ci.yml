@@ -48,6 +48,8 @@ jobs:
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+          dockerfile: ./dining_manager/Dockerfile
+          context: ./dining_manager   
 
 
 
