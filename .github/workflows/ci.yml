@@ -42,7 +42,7 @@ jobs:
         working-directory: ./dining_manager
 
       - name: Build and Push Docker Image
-        user: mr-smithers-excellent/docker-build-push@v6
+        uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: sourav1304021/diningmanage
           registry: docker.io
@@ -51,7 +51,7 @@ jobs:
 
 
 
-          
+
   
   # build-and-push:
   #   needs: test
